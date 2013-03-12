@@ -1,0 +1,112 @@
+<!doctype html>
+<html>
+<head>
+  
+  <!-- base css -->
+  <link rel="stylesheet" type="text/css" href="https://s3-s.licdn.com/scds/concat/common/css?h=3bifs78lai5i0ndyj1ew7316e-c8kkvmvykvq2ncgxoqb13d2by-4cff62fozoxsbiyfz40j584kw-c5839km74lqu75dnankln5rgt-4uu2pkz5u0jch61r2nhpyyrn8-bf0i9bv8oqeq4shjzvzhms72i-4om4nn3a2z730xs82d78xj3be-4newiqesz8x3qjgqezmhywsri-ct4kfyj4tquup0bvqhttvymms-8s9la6qzt782vxdcgwzy2mbpn-btde8he824yz2feemk13vlls3-9zbbsrdszts09by60it4vuo3q-6ar98u770i0clgj9lu8zxe6dx-901u057v2k19l3bz80xj15yhf-34ohz9lv9h6cjd8zhbmfk3tbw-5pnxeosk9ql3alz2yvw5hhirb-6ceg763nywwe227qy2g9w2q4u-4z5x4qkl5qhtmn810nwa1hmnd"/>
+  
+  <!-- /today css -->
+  <link rel="stylesheet" type="text/css" href="https://s3-s.licdn.com/scds/concat/common/css?h=dbcxcwzgraa6yv9hqn4z5oxa8-aw0kahdybem6ne4oztq7x7gk7-7rflve27c4osbf7mxegpfv8wu-e1j8a4dr5u8cb7wm4sz84tom6-caxjw3htjf4qg5f0wd65k1ttm-afoc3swru33ae6usa0wj75o71-9uegbhuyb09xbg73v34d8cayb-3x2uta0fo028jpw2bd6ti5wfe"/>
+  
+  <!-- card css -->
+  <link rel="stylesheet" type="text/css" href="plus-card.css"/>
+</head>
+<body class="katy-bg">
+  
+  <div id="main" class="grid-e pulse pulse-top-news social-ui magazine infinite-scroll  date-7262012 date-July 2012">
+    <div id="tagline">
+      <div id="tagline-date">
+        <span class="month" id="tagline-month">Jul</span>
+        <span class="day" id="tagline-day">26</span>
+        <script>
+          (function() {
+            var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+            date = new Date,
+            day = date.getDate();
+            document.getElementById('tagline-month').innerHTML = months[date.getMonth()];
+            document.getElementById('tagline-day').innerHTML = (day < 10 ? '0' : '') + day;
+          }());
+        </script>
+      </div>
+      <h2><a href="/today/">LinkedIn <strong>Today</strong></a></h2>
+      <!-- <span id="tagline-text"> The day's top news, tailored for you. </span> -->
+    </div>
+
+    <div id="view">
+      <div id="card-wrapper" class="card-wrapper">
+      </div>
+    </div>
+  </div>
+  
+  <!-- dust library -->
+  <script type="text/javascript" src="http://s3.licdn.com/scds/concat/common/js?v=build-2000_1_20157-prod&f=lib/dust/dust-core"></script>
+  <script type="text/javascript" src="http://s3.licdn.com/scds/concat/common/js?v=build-2000_1_20157-prod&f=lib/dust/dust-helpers"></script>
+  <script type="text/javascript" src="http://s3.licdn.com/scds/concat/common/js?v=build-2000_1_20157-prod&f=lib/dust/dust-ui-helpers"></script>
+  <script type="text/javascript" src="http://s3.licdn.com/scds/concat/common/js?v=build-2000_1_20157-prod&f=tl/shared/dust-js/dust-compile"></script>
+  
+  <!-- json data -->
+  <script type="text/javascript" src="data.js"></script>
+  
+  <!-- dust template -->
+  <script type="text/template" id="cards-template">
+    {#articles}
+      <div class="polaroid">
+        <div class="image">
+          <div class="inner-shadow"></div>
+          <a href="{resolvedUrl}" target="_blank"><img class="wrapper" src="{thumbnailUrl}" /></a>
+          {! http://www.google.com/s2/u/0/favicons?domain={sourceDomain} !}
+          <a  class="avatar"href="http://{sourceDomain}" target="_blank"><img src="http://g.etfv.co/http://{sourceDomain}"/></a>
+          <div class="time-ago">shared <br/ > about {firstSharedDate|formatDate}</div>
+          <a class="handle" href="http://{sourceDomain}" target="_blank">{sourceDomain}</a>
+          <div class="caption">{title} </div>
+        </div>
+        <div class="shadow"></div>
+      </div>
+    {/articles}
+  </script>
+  
+  <script>
+    (function() {
+      dust.filters.formatDate = function(timestampe) {
+        var now = +new Date,
+          date = new Date(timestampe),
+          difference = now - date,
+          output = '',
+          SECOND = 1000,
+          MINUTE = SECOND * 60,
+          HOUR = MINUTE * 60,
+          DAY = HOUR * 24,
+          WEEK = DAY * 7,
+          MONTH = WEEK * 4,
+          YEAR = DAY * 365;
+
+        if (difference < SECOND){ //less than a second
+          output = 'just now';
+        }else if (difference < MINUTE){ //less than a minute
+          output = Math.round(difference / SECOND) + 's';
+        }else if (difference < HOUR) { //less than an hour
+          output = Math.round(difference / MINUTE) + 'm';
+        }else if (difference < DAY){ //less than a day
+          output = Math.round(difference / HOUR) + 'h';
+        }else if (difference < WEEK){ //less than a week
+          output = Math.round(difference / DAY) + 'd';
+        }else if (difference < MONTH){ //less than a month
+          output = Math.round(difference / WEEK) + 'w';
+        }else if (difference < YEAR){ //less than a year
+          output = Math.round(difference / MONTH) + 'mth';
+        }else {
+          output = Math.round(difference / YEAR) + 'y';
+        }
+
+        return output + ' ago';
+      };
+      
+      var template = dust.compileFn(document.getElementById('cards-template').innerHTML, 'follow-sources-template-eval');
+      template(data, function(err, html) {
+        var cardWrapper = document.getElementById('card-wrapper');
+        cardWrapper.innerHTML = html;
+      });
+    }());
+  </script>
+</body>
+</html>
